@@ -2,7 +2,7 @@
   "name": "nodejs-ts-starter",
   "version": "1.0.0",
   "description": "A boilerplate to use as a base for building your nodejs projects",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon",
     "start": "node dist/index.js",
@@ -40,6 +40,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "nodemon": "^3.0.1",
+    "pino-pretty": "^10.2.3",
     "prettier": "3.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
@@ -48,7 +49,8 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "pino": "^8.16.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

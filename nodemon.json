@@ -2,11 +2,11 @@
   "restartable": "rs",
   "ignore": [".git", "node_modules/**/node_modules"],
   "verbose": true,
-  "exec": "ts-node index.ts",
+  "exec": "ts-node src/index.ts",
   "execMap": {
     "ts": "ts-node"
   },
-  "watch": ["src/**/*.ts", "./index.ts"],
+  "watch": ["src/**/*.ts"],
   "env": {
     "NODE_ENV": "development"
   },

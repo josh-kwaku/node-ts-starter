@@ -1,3 +1,4 @@
 import { BaseConfig } from '../base.config';
+import { BaseLogger, LogOptions } from './logger';
 
-export { BaseConfig };
+export { BaseConfig, BaseLogger, LogOptions };
