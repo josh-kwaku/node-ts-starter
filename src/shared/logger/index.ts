@@ -4,8 +4,8 @@ import { AppLogger } from './logger';
 
 const loggerConfig = new AppLoggerConfig();
 
-const logger = AppLogger.init({
+const appLogger = AppLogger.init({
   level: loggerConfig.configValues?.LOG_LEVEL ?? LogLevel.INFO
 })!;
 
-export default logger;
+export default appLogger;
