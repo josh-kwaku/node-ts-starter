@@ -5,8 +5,4 @@ export class AppLoggerConfig extends BaseConfig<Config> {
   constructor() {
     super();
   }
-
-  get configValues(): Config | undefined {
-    return this.ConfigValues;
-  }
 }

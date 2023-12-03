@@ -4,8 +4,8 @@ import dotenv, { DotenvConfigOptions } from 'dotenv';
 const default_path = path.join(process.cwd(), '.env');
 export abstract class BaseConfig<ConfigType> {
   private options: DotenvConfigOptions;
-  private is_env_vars_loaded: boolean = false;
-  protected ConfigValues: ConfigType | undefined;
+  private static is_env_vars_loaded: boolean = false;
+  protected static values: any;
 
   constructor(options: DotenvConfigOptions = { path: default_path }) {
     this.options = options;
@@ -13,18 +13,18 @@ export abstract class BaseConfig<ConfigType> {
   }
 
   private init() {
-    if (this.is_env_vars_loaded) {
+    if (BaseConfig.is_env_vars_loaded) {
       return;
     }
     const result = dotenv.config(this.options);
     if (result.error !== undefined) {
-      throw new Error('Could not load environment variables', {
-        cause: result.error
-      });
+      throw new Error('Could not load environment variables');
     }
-    this.is_env_vars_loaded = true;
-    this.ConfigValues = result.parsed as ConfigType;
+    BaseConfig.is_env_vars_loaded = true;
+    BaseConfig.values = result.parsed as ConfigType;
   }
 
-  abstract get configValues(): ConfigType | undefined;
+  get configValues(): ConfigType | undefined {
+    return BaseConfig.values;
+  }
 }

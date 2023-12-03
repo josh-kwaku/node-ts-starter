@@ -2,7 +2,7 @@ import pino, { LoggerOptions, Logger, Bindings } from 'pino';
 import { BaseLogger, LogOptions } from '../interfaces';
 
 export class AppLogger implements BaseLogger {
-  private static lib_instance: Logger;
+  public static lib_instance: Logger;
   private static instance: BaseLogger;
 
   private constructor() {}
