@@ -1,12 +1,13 @@
 import { DomainEntity } from '../../shared/interfaces';
 
 export type UserProps = {
+  id?: string;
   first_name?: string;
   last_name?: string;
   username?: string;
   email?: {
     value: string;
-    verified: boolean;
+    verified?: boolean;
   };
   active?: boolean;
 };
@@ -17,7 +18,7 @@ export class User extends DomainEntity {
   private username?: string;
   private email?: {
     value: string;
-    verified: boolean;
+    verified?: boolean;
   };
   private active?: boolean;
 

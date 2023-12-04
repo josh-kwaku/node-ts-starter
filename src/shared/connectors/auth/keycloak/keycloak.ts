@@ -21,7 +21,7 @@ export class KeycloakConnector {
     return KeycloakConnector.instance;
   }
 
-  get connectorInstance() {
+  static connectorInstance() {
     return KeycloakConnector.lib_instance;
   }
 

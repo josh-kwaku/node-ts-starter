@@ -9,35 +9,99 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
 import appLogger from './shared/logger';
-import router from './components';
 import { AppLogger } from './shared/logger/logger';
 import { ErrorHandler } from './shared/error';
+import { PostgresConfig } from './shared/connectors/postgres/config';
+import { PostgresConnection } from './shared/connectors/postgres/postgres';
+import { KeycloakConfig } from './shared/connectors/auth/keycloak/config';
+import { KeycloakConnector } from './shared/connectors/auth/keycloak/keycloak';
+import { AppController } from './components';
 
-const app: Express = express();
+export class App {
+  public static instance = express();
+  private postgresConfig: PostgresConfig;
+  private postgresConnection: typeof PostgresConnection;
+  private authClientConfig: KeycloakConfig;
+  private authClient: typeof KeycloakConnector;
+  private appController: typeof AppController;
 
-app.use(cors());
-app.use(
-  pinoHttp({
-    logger: AppLogger.lib_instance
-  })
-);
-app.use(bodyParser.urlencoded({ extended: true }));
+  constructor(
+    postgresConfig: PostgresConfig,
+    postgresConnection: typeof PostgresConnection,
+    authClientConfig: KeycloakConfig,
+    authClient: typeof KeycloakConnector,
+    appController: typeof AppController
+  ) {
+    this.postgresConfig = postgresConfig;
+    this.postgresConnection = postgresConnection;
+    this.authClientConfig = authClientConfig;
+    this.authClient = authClient;
+    this.appController = appController;
+  }
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  bodyParser.json()(req, res, (err) => {
-    if (err) {
-      appLogger.error({ error: err });
-      // perform extra error handling here
-    }
-    next();
-  });
-});
+  async init() {
+    await this.initDb();
+    await this.initAuthClient();
+    this.appController.init();
 
-app.use(router);
+    App.instance.use(cors());
+    App.instance.use(
+      pinoHttp({
+        logger: AppLogger.lib_instance
+      })
+    );
+    App.instance.use(bodyParser.urlencoded({ extended: true }));
 
-const errorHandler = new ErrorHandler();
-app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
-  await errorHandler.handleError(err);
-});
+    App.instance.use((req: Request, res: Response, next: NextFunction) => {
+      bodyParser.json()(req, res, (err) => {
+        if (err) {
+          appLogger.error({ error: err });
+          // perform extra error handling here
+        }
+        next();
+      });
+    });
 
-export default app;
+    App.instance.use(this.appController.router);
+
+    App.instance.use(
+      async (
+        err: Error,
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ): Promise<void> => {
+        await ErrorHandler.handleError(err);
+      }
+    );
+  }
+
+  private async initDb() {
+    const configValues = this.postgresConfig.configValues;
+    await this.postgresConnection
+      .init({
+        username: configValues?.DB_USERNAME,
+        password: String(configValues?.DB_PASSWORD ?? ''),
+        port: configValues?.DB_PORT,
+        database: configValues?.DB_NAME,
+        schema: configValues?.DB_SCHEMA,
+        dialect: 'postgres'
+      })
+      .checkConnection();
+  }
+
+  private async initAuthClient() {
+    const configValues = this.authClientConfig.configValues;
+    await this.authClient
+      .init({
+        url: configValues?.AUTH_CLIENT_BASE_URL!,
+        realm: configValues?.AUTH_CLIENT_REALM!
+      })
+      .authenticate({
+        username: configValues?.AUTH_CLIENT_USERNAME,
+        password: configValues?.AUTH_CLIENT_PASSWORD,
+        grantType: configValues?.AUTH_CLIENT_GRANT_TYPE ?? 'client_credentials',
+        clientId: configValues?.AUTH_CLIENT_ID ?? ''
+      });
+  }
+}

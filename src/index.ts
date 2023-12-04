@@ -2,20 +2,34 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import http from 'http';
-import app from './app';
 import appLogger from './shared/logger';
 import { AppConfig } from './config';
-import postgresHandler from './shared/connectors/postgres/index';
+import { ErrorHandler } from './shared/error';
+import { PostgresConnection } from './shared/connectors/postgres/postgres';
+import { App } from './app';
+import { PostgresConfig } from './shared/connectors/postgres/config';
+import { KeycloakConfig } from './shared/connectors/auth/keycloak/config';
+import { KeycloakConnector } from './shared/connectors/auth/keycloak/keycloak';
+import { AppController } from './components';
 
-const server = http.createServer(app);
+(async function initApp() {
+  await new App(
+    new PostgresConfig(),
+    PostgresConnection,
+    new KeycloakConfig(),
+    KeycloakConnector,
+    AppController
+  ).init();
+})();
 
+const server = http.createServer(App.instance);
 const appConfig = new AppConfig().configValues!;
 
 const closeOpenConnections = () => {
   appLogger.info({ message: 'Shutting down server and open connections' });
   server.close(async () => {
     appLogger.info({ message: 'Server shut down' });
-    await postgresHandler.terminate();
+    await PostgresConnection.terminate();
     process.exit(1);
   });
 };
@@ -26,10 +40,10 @@ process.on('unhandledRejection', (reason) => {
 
 process.on('uncaughtException', (error: Error) => {
   appLogger.fatal({ error, message: 'Fatal error encountered' });
-  // handler.handleError(error);
-  // if (!handler.isTrustedError(error)) {
-  //     closeOpenConnections(true);
-  // }
+  ErrorHandler.handleError(error);
+  if (!ErrorHandler.isTrustedError(error)) {
+    closeOpenConnections();
+  }
 });
 
 process.on('SIGTERM', () => {

@@ -6,7 +6,7 @@ import { ErrorMessages } from './error-messages';
 export class PostgresConnection {
   private static orm_instance: Sequelize | undefined;
   private static instance: PostgresConnection | undefined;
-  private logger: BaseLogger = appLogger;
+  private static logger: BaseLogger = appLogger;
   private constructor() {}
 
   static init(config: SequelizeOptions): PostgresConnection {
@@ -19,17 +19,21 @@ export class PostgresConnection {
     return PostgresConnection.instance;
   }
 
-  get connectionInstance(): Sequelize | undefined {
+  static connectionInstance(): Sequelize | undefined {
     return PostgresConnection.orm_instance;
   }
 
   async checkConnection(): Promise<void> {
     try {
-      this.logger.info({ message: ErrorMessages.DB_STATUS_CHECK });
+      PostgresConnection.logger.info({
+        message: ErrorMessages.DB_STATUS_CHECK
+      });
       await PostgresConnection.orm_instance!.authenticate();
-      this.logger.info({ message: ErrorMessages.DB_STATUS_CHECK_SUCCESS });
+      PostgresConnection.logger.info({
+        message: ErrorMessages.DB_STATUS_CHECK_SUCCESS
+      });
     } catch (error) {
-      this.logger.fatal({
+      PostgresConnection.logger.fatal({
         message: ErrorMessages.DB_STATUS_CHECK_FAILURE,
         error
       });
@@ -37,15 +41,17 @@ export class PostgresConnection {
     }
   }
 
-  async terminate(): Promise<void> {
+  static async terminate(): Promise<void> {
     try {
-      this.logger.info({ message: ErrorMessages.DB_TERMINATION_ATTEMPT });
+      PostgresConnection.logger.info({
+        message: ErrorMessages.DB_TERMINATION_ATTEMPT
+      });
       await PostgresConnection.orm_instance!.close();
-      this.logger.info({
+      PostgresConnection.logger.info({
         message: ErrorMessages.DB_TERMINATION_ATTEMPT_SUCCESS
       });
     } catch (error) {
-      this.logger.fatal({
+      PostgresConnection.logger.fatal({
         message: ErrorMessages.DB_TERMINATION_ATTEMPT_FAILURE,
         error
       });

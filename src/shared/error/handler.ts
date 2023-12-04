@@ -3,9 +3,9 @@ import appLogger from '../logger';
 import { AppError } from './base';
 
 export class ErrorHandler {
-  public async handleError(err: Error): Promise<void> {
+  public static async handleError(err: Error): Promise<void> {
     if (err instanceof AppError) {
-      this.logError(err);
+      ErrorHandler.logError(err);
       if (err.isOperational === false) throw err;
     } else {
       appLogger.fatal({ error: err });
@@ -13,7 +13,7 @@ export class ErrorHandler {
     }
   }
 
-  private logError(error: AppError) {
+  private static logError(error: AppError) {
     if (
       error.httpCode >= HttpStatusCode.BAD_REQUEST &&
       error.httpCode < HttpStatusCode.INTERNAL_SERVER_ERROR
@@ -24,7 +24,7 @@ export class ErrorHandler {
     }
   }
 
-  public isTrustedError(error: Error) {
+  public static isTrustedError(error: Error) {
     if (error instanceof AppError) {
       return error.isOperational;
     }

@@ -1,4 +1,4 @@
-import { authClient } from '../../../../shared/connectors/auth/keycloak';
+import { KeycloakConnector } from '../../../../shared/connectors/auth/keycloak/keycloak';
 import appLogger from '../../../../shared/logger';
 import { UserRepository } from '../../data-access';
 import { UserMapper } from '../../mappers/user-mapper';
@@ -11,9 +11,9 @@ export class UserApi {
 
   constructor() {}
 
-  static async init() {
+  static init() {
     const userRepo = new UserRepository(
-      authClient!,
+      KeycloakConnector.connectorInstance()!,
       appLogger,
       new UserMapper()
     );
