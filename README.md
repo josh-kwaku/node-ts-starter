@@ -18,6 +18,8 @@ By default, this boilerplate comes with
 
 Both of which you can easily plug into your app. See an example in the [components/user](https://github.com/josh-kwaku/node-ts-starter/tree/main/src/components/user) directory.
 
+> Keycloak is an Open Source Identity and Access Management System that takes away the burden of implementing auth from scratch. According to [the official website](https://www.keycloak.org/), you can use Keycloak to "Add authentication to applications and secure services with minimum effort. No need to deal with storing users or authenticating users. Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more.
+
 Since the project is not dockerzied yet,instances of `postgres` and `keycloak` need to be setup manually.
 
 > Of course if you do **not care** for either Postgres or Keycloak, feel free to yank them out of the project
@@ -37,8 +39,6 @@ $ docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=adm
 Access the keycloak admin interface through your browser by visiting `http://localhost:8080`
 
 Visit https://www.keycloak.org/getting-started/getting-started-docker to get acquainted with keycloak.
-
-> Keycloak is an Open Source Identity and Access Management System that takes away the burden of implementing auth from scratch. According to [the official website](https://www.keycloak.org/), you can use Keycloak to "Add authentication to applications and secure services with minimum effort. No need to deal with storing users or authenticating users. Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more.
 
 ## Usage
 
