@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "build": "tsc -p tsconfig.build.json",
     "start": "node build/index.js",
-    "test": "jest",
+    "test": "npm run test:unit && npm run test:int",
     "test:unit": "jest --config ./jest.unit.js | pino-pretty",
     "test:int": "jest --config ./jest.int.js | pino-pretty",
     "test:infra": "jest --config ./jest.infra.js",
