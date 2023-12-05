@@ -2,8 +2,12 @@
   "extends": "./tsconfig.json",
   "exclude": [
     "**/*.spec.ts",
-    "**/*.integration.ts",
+    "**/*.spec.int.ts",
     "**/__mocks__/*",
-    "**/test/*"
+    "**/test/*",
+    "test-setup/",
+    "build/",
+    ".vscode/",
+    ".husky/"
   ]
 }

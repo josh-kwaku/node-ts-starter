@@ -1,0 +1,79 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker compose reference guide at
+# https://docs.docker.com/compose/compose-file/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  server:
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      AUTH_CLIENT_BASE_URL: keycloak:8080
+      AUTH_CLIENT_USERNAME: ${AUTH_CLIENT_USERNAME}
+      AUTH_CLIENT_PASSWORD: ${AUTH_CLIENT_PASSWORD}
+      AUTH_CLIENT_GRANT_TYPE: ${AUTH_CLIENT_GRANT_TYPE}
+      AUTH_CLIENT_ID: ${AUTH_CLIENT_ID}
+      AUTH_CLIENT_REALM: master
+      DB_HOST: postgres
+      DB_PORT: 5432
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src:/app
+    network_mode: 'host'
+
+  postgres:
+    image: postgres:16
+    restart: always
+    env_file:
+      - .env
+    user: postgres
+    environment:
+      POSTGRES_DB: 'testdb'
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    network_mode: 'host'
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # keycloak:
+  #   image: keycloak/keycloak:22.0
+  #   command: ['start-dev']
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   environment:
+  #     KC_HEALTH_ENABLED: 'true'
+  #     KEYCLOAK_ADMIN: ${AUTH_CLIENT_USERNAME}
+  #     KEYCLOAK_ADMIN_PASSWORD: ${AUTH_CLIENT_PASSWORD}
+  #     KC_DB: postgres
+  #     KC_DB_PASSWORD: ${DB_PASSWORD}
+  #     KC_DB_URL_DATABASE: ${DB_NAME}
+  #     KC_DB_SCHEMA: public
+  #     KC_DB_URL_HOST: ${DB_HOST}
+  #     KC_DB_URL_PORT: 5432
+  #     KC_DB_USERNAME: ${DB_USERNAME}
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e \"GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   ports:
+  #     - "8180:8080"
+
+volumes:
+  postgres-data:

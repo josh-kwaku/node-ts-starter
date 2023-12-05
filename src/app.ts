@@ -85,6 +85,7 @@ export class App {
         port: configValues?.DB_PORT,
         database: configValues?.DB_NAME,
         schema: configValues?.DB_SCHEMA,
+        host: configValues?.DB_HOST,
         dialect: 'postgres'
       })
       .checkConnection();
@@ -92,6 +93,7 @@ export class App {
 
   private async initAuthClient() {
     const configValues = this.authClientConfig.configValues;
+    console.log('CF: ', configValues);
     await this.authClient
       .init({
         url: configValues?.AUTH_CLIENT_BASE_URL!,
