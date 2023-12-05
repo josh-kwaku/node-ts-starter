@@ -8,11 +8,16 @@ type Config = {
   AUTH_CLIENT_ID: string;
   AUTH_CLIENT_BASE_URL: string;
   AUTH_CLIENT_REALM: string;
+  AUTH_CLIENT_PORT: string;
   AUTH_CLIENT_TOTP?: string;
 };
 
 export class KeycloakConfig extends BaseConfig<Config> {
   constructor() {
     super();
+  }
+
+  getBaseUrl() {
+    return `${this.configValues?.AUTH_CLIENT_BASE_URL}:${this.configValues?.AUTH_CLIENT_PORT}`;
   }
 }
