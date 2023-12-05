@@ -27,11 +27,6 @@ export class KeycloakConnector {
 
   async authenticate(credentials: Credentials) {
     try {
-      console.log(
-        'Creds: ',
-        credentials,
-        KeycloakConnector.lib_instance!.baseUrl
-      );
       appLogger.info({ message: 'Connecting to keycloak...' });
       await KeycloakConnector.lib_instance!.auth(credentials);
       appLogger.info({ message: 'Connection to keycloak successful' });
