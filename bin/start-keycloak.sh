@@ -12,4 +12,4 @@ else
     exit 1
 fi
 
-docker run -p $AUTH_CLIENT_PORT:8080 -e KEYCLOAK_ADMIN=$AUTH_CLIENT_USERNAME -e KEYCLOAK_ADMIN_PASSWORD=$AUTH_CLIENT_PASSWORD quay.io/keycloak/keycloak:23.0.1 start-dev
+docker run -p $AUTH_CLIENT_PORT:8080 -e KEYCLOAK_ADMIN=$AUTH_CLIENT_USERNAME -e KEYCLOAK_ADMIN_PASSWORD=$AUTH_CLIENT_PASSWORD quay.io/keycloak/keycloak:23.0.1 start-dev
