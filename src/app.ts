@@ -96,7 +96,7 @@ export class App {
     console.log('CF: ', configValues);
     await this.authClient
       .init({
-        url: configValues?.AUTH_CLIENT_BASE_URL!,
+        url: this.authClientConfig.getBaseUrl(),
         realm: configValues?.AUTH_CLIENT_REALM!
       })
       .authenticate({
