@@ -1,15 +1,14 @@
 import request from 'supertest';
-import { App } from '../../app';
-import { PostgresConfig } from '../connectors/postgres/config';
-import { PostgresConnection } from '../connectors/postgres/postgres';
-import { KeycloakConfig } from '../connectors/auth/keycloak/config';
-import { KeycloakConnector } from '../connectors/auth/keycloak/keycloak';
-import { AppController } from '../../components';
+import { App } from '../src/app';
+import { PostgresConfig } from '../src/shared/connectors/postgres/config';
+import { PostgresConnection } from '../src/shared/connectors/postgres/postgres';
+import { KeycloakConfig } from '../src/shared/connectors/auth/keycloak/config';
+import { KeycloakConnector } from '../src/shared/connectors/auth/keycloak/keycloak';
+import { AppController } from '../src/components';
 import {
   KeycloakContainer,
   StartedKeycloakContainer
 } from './containers/keycloak';
-import { AUTH_SERVER_PORT } from './constants';
 
 export class TestModule {
   private server: request.SuperTest<request.Test>;

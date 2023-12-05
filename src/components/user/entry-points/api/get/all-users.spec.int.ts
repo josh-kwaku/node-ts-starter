@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
-import { TestModule } from '../../../../../shared/test/setup';
+import { TestModule } from '../../../../../../test-setup';
 
 describe('GET users', () => {
   jest.setTimeout(180_000);
