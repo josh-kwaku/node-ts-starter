@@ -92,6 +92,7 @@ export class App {
 
   private async initAuthClient() {
     const configValues = this.authClientConfig.configValues;
+    console.log('configValues: ', configValues);
     await this.authClient
       .init({
         url: configValues?.AUTH_CLIENT_BASE_URL!,

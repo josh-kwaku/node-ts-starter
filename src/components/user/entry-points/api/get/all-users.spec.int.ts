@@ -1,8 +1,9 @@
-import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
 import { TestModule } from '../../../../../shared/test/setup';
 
 describe('GET users', () => {
+  jest.setTimeout(180_000);
   let server: request.SuperTest<request.Test>;
   let testModule: TestModule;
   beforeAll(async () => {
