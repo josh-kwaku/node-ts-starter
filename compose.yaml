@@ -48,32 +48,5 @@ services:
       retries: 5
       start_period: 30s
 
-  # keycloak:
-  #   image: keycloak/keycloak:22.0
-  #   command: ['start-dev']
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   environment:
-  #     KC_HEALTH_ENABLED: 'true'
-  #     KEYCLOAK_ADMIN: ${AUTH_CLIENT_USERNAME}
-  #     KEYCLOAK_ADMIN_PASSWORD: ${AUTH_CLIENT_PASSWORD}
-  #     KC_DB: postgres
-  #     KC_DB_PASSWORD: ${DB_PASSWORD}
-  #     KC_DB_URL_DATABASE: ${DB_NAME}
-  #     KC_DB_SCHEMA: public
-  #     KC_DB_URL_HOST: ${DB_HOST}
-  #     KC_DB_URL_PORT: 5432
-  #     KC_DB_USERNAME: ${DB_USERNAME}
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e \"GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   ports:
-  #     - "8180:8080"
-
 volumes:
   postgres-data:
