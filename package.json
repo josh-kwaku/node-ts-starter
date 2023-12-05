@@ -10,6 +10,7 @@
     "test": "jest",
     "test:unit": "jest --config ./jest.unit.js | pino-pretty",
     "test:int": "jest --config ./jest.int.js | pino-pretty",
+    "test:infra": "jest --config ./jest.infra.js",
     "prepare": "husky install",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },

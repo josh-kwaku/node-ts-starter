@@ -14,9 +14,6 @@ describe('Keycloak container', () => {
       realmName: 'master'
     });
   });
-  afterAll(async () => {
-    await container.stop();
-  });
 
   it('should connect successfully', async () => {
     console.log('uri: ', container.getUsername(), container.getPassword());
