@@ -14,11 +14,13 @@ This repo contains boilerplate code needed to get a nodejs and typescript up and
 By default, this boilerplate comes with
 
 - a postgres connector for connecting to a postgres instance
-- a keycloak connector for connecting to a keycloak instance,
+- a keycloak connector for connecting to a keycloak instance
 
 Both of which you can easily plug into your app. See an example in the [components/user](https://github.com/josh-kwaku/node-ts-starter/tree/main/src/components/user) directory.
 
 Since the project is not dockerzied yet,instances of `postgres` and `keycloak` need to be setup manually.
+
+> Of course if you do **not care** for either Postgres or Keycloak, feel free to yank them out of the project
 
 ### Setting up Keycloak with Docker
 
