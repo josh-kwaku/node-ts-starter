@@ -11,36 +11,42 @@ services:
   server:
     build:
       context: .
-    env_file:
-      - .env
     environment:
-      AUTH_CLIENT_BASE_URL: keycloak:8080
-      AUTH_CLIENT_USERNAME: ${AUTH_CLIENT_USERNAME}
-      AUTH_CLIENT_PASSWORD: ${AUTH_CLIENT_PASSWORD}
-      AUTH_CLIENT_GRANT_TYPE: ${AUTH_CLIENT_GRANT_TYPE}
-      AUTH_CLIENT_ID: ${AUTH_CLIENT_ID}
+      AUTH_CLIENT_BASE_URL: http://host.docker.internal
+      AUTH_CLIENT_USERNAME: admin
+      AUTH_CLIENT_PASSWORD: admin
+      AUTH_CLIENT_GRANT_TYPE: password
+      AUTH_CLIENT_ID: admin-cli
+      AUTH_CLIENT_PORT: 8180
       AUTH_CLIENT_REALM: master
-      DB_HOST: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_SCHEMA: public
+      PORT: 9971
+      DB_NAME: testdb
       DB_PORT: 5432
+      DB_HOST: postgres
     depends_on:
       postgres:
         condition: service_healthy
     volumes:
       - ./src:/app
-    network_mode: 'host'
+    ports:
+      - '9971:9971'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
 
   postgres:
     image: postgres:16
     restart: always
-    env_file:
-      - .env
     user: postgres
     environment:
       POSTGRES_DB: 'testdb'
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    network_mode: 'host'
+    ports:
+      - '5433:5432'
     healthcheck:
       test: ['CMD', 'pg_isready']
       interval: 10s
