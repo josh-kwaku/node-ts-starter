@@ -1,9 +1,5 @@
 # syntax=docker/dockerfile:1
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/engine/reference/builder/
-
 ARG NODE_VERSION=20.4.0
 
 ################################################################################
@@ -13,7 +9,6 @@ FROM node:${NODE_VERSION}-alpine as base
 RUN npm i -g nodemon
 RUN npm i -g ts-node
 RUN npm i -g pino-pretty
-RUN npm i -g typescript
 
 # Set working directory for all build stages.
 WORKDIR /usr/src/app

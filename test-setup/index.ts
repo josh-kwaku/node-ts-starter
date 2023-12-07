@@ -29,6 +29,14 @@ export class TestModule {
     await TestModule.authContainer.stop();
   }
 
+  private static overrideDBConfig() {
+    const db_config = new PostgresConfig();
+    db_config.overrideConfig({
+      DB_HOST: 'localhost'
+    });
+    return db_config;
+  }
+
   private static overrideAuthConfig() {
     const authConfig = new KeycloakConfig();
     authConfig.overrideConfig({
@@ -37,7 +45,8 @@ export class TestModule {
       AUTH_CLIENT_REALM: 'master',
       AUTH_CLIENT_USERNAME: TestModule.authContainer.getUsername(),
       AUTH_CLIENT_ID: 'admin-cli',
-      AUTH_CLIENT_GRANT_TYPE: 'password'
+      AUTH_CLIENT_GRANT_TYPE: 'password',
+      AUTH_CLIENT_PORT: ''
     });
     return authConfig;
   }
@@ -45,7 +54,7 @@ export class TestModule {
   static async init() {
     await TestModule.startContainers();
     await new App(
-      new PostgresConfig(),
+      TestModule.overrideDBConfig(),
       PostgresConnection,
       TestModule.overrideAuthConfig(),
       KeycloakConnector,
