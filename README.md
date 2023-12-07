@@ -20,25 +20,7 @@ Both of which you can easily plug into your app. See an example in the [componen
 
 > Keycloak is an Open Source Identity and Access Management System that takes away the burden of implementing auth from scratch. According to [the official website](https://www.keycloak.org/), you can use Keycloak to "Add authentication to applications and secure services with minimum effort. No need to deal with storing users or authenticating users. Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more.
 
-Since the project is not dockerzied yet,instances of `postgres` and `keycloak` need to be setup manually.
-
 > Of course if you do **not care** for either Postgres or Keycloak, feel free to yank them out of the project
-
-### Setting up Keycloak with Docker
-
-> Ensure you have docker installed & running on your computer before running the command below
-
-#### Step 1 - Starting the keycloak container
-
-```
-$ docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:23.0.1 start-dev
-```
-
-#### Step 2 (Optional)
-
-Access the keycloak admin interface through your browser by visiting `http://localhost:8080`
-
-Visit https://www.keycloak.org/getting-started/getting-started-docker to get acquainted with keycloak.
 
 ## Usage
 
@@ -58,15 +40,29 @@ $ npm i
 
 Using the `.env.example` file, populate your `.env` file accordingly
 
-### Step 4 - Start the app
+### Step 4 - Start the app with docker (in dev mode)
+
+This spins up the app and it'd two dependencies `keycloak` and `postgres`
 
 ```bash
-$ npm run dev
+$ docker compose -f compose-dev.yaml up --build
 ```
 
-This starts the app with `nodemon` and `ts-node` in `watch mode` so that the server is restarted on code update.
+### Step 4 - Start the app with docker
+
+This spins up the app and it'd two dependencies `keycloak` and `postgres`
+
+```bash
+$ docker compose up --build
+```
 
 ### Step 5 - Code Away :)
+
+## Misc
+
+Access the keycloak admin interface through your browser by visiting `http://localhost:8180`
+
+Visit https://www.keycloak.org/getting-started/getting-started-docker to get acquainted with keycloak.
 
 ## Testing
 

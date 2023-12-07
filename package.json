@@ -4,7 +4,7 @@
   "description": "A boilerplate to use as a base for building your nodejs projects",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon -L",
     "build": "tsc -p tsconfig.build.json",
     "start": "node build/index.js",
     "test": "npm run test:unit && npm run test:int",
@@ -48,7 +48,7 @@
     "husky": "^8.0.3",
     "jest": "^29.7.0",
     "lint-staged": "^15.1.0",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "pino-pretty": "^10.2.3",
     "prettier": "3.1.0",
     "supertest": "^6.3.3",

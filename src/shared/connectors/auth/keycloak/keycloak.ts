@@ -5,7 +5,7 @@ import appLogger from '../../../logger';
 export class KeycloakConnector {
   private static lib_instance: KcAdminClient;
   private static instance: KeycloakConnector | undefined;
-
+  private static logger = appLogger;
   private constructor() {}
 
   static init(config: { url: string; realm: string }) {
@@ -27,12 +27,17 @@ export class KeycloakConnector {
 
   async authenticate(credentials: Credentials) {
     try {
-      appLogger.info({ message: 'Connecting to keycloak...' });
+      KeycloakConnector.logger.info({ message: 'Connecting to keycloak...' });
       await KeycloakConnector.lib_instance!.auth(credentials);
-      appLogger.info({ message: 'Connection to keycloak successful' });
+      KeycloakConnector.logger.info({
+        message: 'Connection to keycloak successful'
+      });
     } catch (error) {
-      appLogger.fatal({ message: 'Keycloak connection error', error });
-      throw new Error('keycloak connection error', { cause: error });
+      KeycloakConnector.logger.fatal({
+        message: 'Keycloak connection error',
+        error
+      });
+      throw new Error('keycloak connection error');
     }
   }
 }

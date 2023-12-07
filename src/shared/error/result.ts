@@ -20,7 +20,7 @@ export class Result<Output = any, Err = ResultErr> {
 
   unwrap() {
     if (this.output !== undefined) return this.output;
-    throw new Error('unwrap call failed', { cause: this.error });
+    throw new Error('unwrap call failed');
   }
 
   unwrap_or_else(error_handler: ErrorHandlerFn) {
@@ -30,6 +30,6 @@ export class Result<Output = any, Err = ResultErr> {
 
   expect(message: string) {
     if (this.output !== undefined) return this.output;
-    throw new Error(message, { cause: this.error });
+    throw new Error(message);
   }
 }
